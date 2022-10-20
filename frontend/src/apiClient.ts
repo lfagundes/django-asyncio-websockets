@@ -18,4 +18,4 @@ const getMessages = (roomName: string): Promise<Response> => {
 };
 
 
-export default { getMessages, join, sendMessage };
+export default { join, leave, sendMessage, getMessages };
