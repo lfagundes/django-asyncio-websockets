@@ -4,10 +4,6 @@ const join = (roomName: string, nickName: string): Promise<Response> => {
   return fetch(`${API_URL}/join/${roomName}/${nickName}`, { method: 'POST' })
 };
 
-const leave = (roomName: string, nickName: string): Promise<Response> => {
-  return fetch(`${API_URL}/leave/${roomName}/${nickName}`, { method: 'POST' })
-};
-
 const sendMessage = (roomName: string, nickName: string, message: string): Promise<Response> => {
   return fetch(`${API_URL}/send/${roomName}/${nickName}`, {
     method: 'POST',
@@ -23,4 +19,4 @@ const getMessages = (roomName: string, nickName: string): Promise<Response> => {
 };
 
 
-export default { join, leave, sendMessage, getMessages };
+export default { join, sendMessage, getMessages };

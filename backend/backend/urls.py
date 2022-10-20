@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.urls import path
 
 from chat.views import (JoinView,
-                        LeaveView,
                         SendView,
                         MessageListView)
 
@@ -25,7 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('api/join/<str:room_name>/<str:nick>', JoinView.as_view()),
-    path('api/leave/<str:room_name>/<str:nick>', LeaveView.as_view()),
     path('api/send/<str:room_name>/<str:nick>', SendView.as_view()),
     path('api/messages/<str:room_name>/<str:nick>', MessageListView.as_view()),
 ]

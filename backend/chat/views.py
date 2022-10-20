@@ -1,3 +1,5 @@
+from datetime import timedelta
+from django.utils import timezone
 from django.http import (HttpResponse,
                          HttpResponseForbidden,
                          HttpResponseNotFound)
@@ -15,16 +17,6 @@ class JoinView(APIView):
         room, _ = Room.objects.get_or_create(name=room_name)
 
         room.user_join(nick)
-
-        return HttpResponse(status=201)
-
-
-class LeaveView(APIView):
-
-    def post(self, request, room_name, nick):
-        room, _ = Room.objects.get_or_create(name=room_name)
-
-        room.user_leave(nick)
 
         return HttpResponse(status=201)
 
@@ -47,7 +39,11 @@ class MessageListView(APIView):
 
         room.user_tick(nick)
 
-        messages = room.message_set.all()[:20]
+        since = timezone.now() - timedelta(0, 3600)
+
+        qs = room.message_set.filter(tstamp__gt=since)
+
+        messages = qs[:20]
 
         serializer = MessageSerializer(messages, many=True)
 

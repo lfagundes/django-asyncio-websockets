@@ -22,23 +22,6 @@ class Room(models.Model):
                                 action=True,
                                 message=message)
 
-    def user_leave(self, nick):
-        try:
-            user = self.user_set.get(nick=nick)
-        except User.DoesNotExist:
-            return False
-
-        user.online = False
-        user.last_seen = timezone.now()
-        user.save()
-
-        message = f'{nick} saiu da sala'
-
-        self.message_set.create(user=user,
-                                action=True,
-                                message=message)
-        return True
-
     def send_message(self, nick, message):
         user, _ = self.user_set.get_or_create(nick=nick)
         self.message_set.create(user=user,
