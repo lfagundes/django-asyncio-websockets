@@ -2,6 +2,7 @@ from django.http import (HttpResponse,
                          HttpResponseForbidden,
                          HttpResponseNotFound)
 from rest_framework.views import APIView
+from rest_framework.response import Response
 from chat.models import User, Room, Message
 from chat.serializers import (UserSerializer,
                               RoomSerializer,
@@ -47,4 +48,4 @@ class MessageListView(APIView):
         messages = room.message_set.all()[:20]
 
         serializer = MessageSerializer(messages, many=True)
-        return HttpResponse(serializer.data)
+        return Response(serializer.data)
