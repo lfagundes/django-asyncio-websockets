@@ -21,6 +21,7 @@ class Room(models.Model):
         self.message_set.create(user=user,
                                 action=True,
                                 message=message)
+        return user
 
     def send_message(self, nick, message):
         user, _ = self.user_set.get_or_create(nick=nick)

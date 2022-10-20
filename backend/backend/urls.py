@@ -19,6 +19,7 @@ from django.urls import path
 from chat.views import (JoinView,
                         SendView,
                         MessageListView)
+from chat.consumers import ChatConsumer
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +27,8 @@ urlpatterns = [
     path('api/join/<str:room_name>/<str:nick>', JoinView.as_view()),
     path('api/send/<str:room_name>/<str:nick>', SendView.as_view()),
     path('api/messages/<str:room_name>/<str:nick>', MessageListView.as_view()),
+]
+
+websocket_urlpatterns = [
+    path('ws/chat/<str:room_name>/<str:nick>', ChatConsumer.as_asgi()),
 ]

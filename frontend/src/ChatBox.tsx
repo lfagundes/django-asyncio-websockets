@@ -15,17 +15,6 @@ const ChatBox = (props: ChatBoxProps) => {
   const [newMessage, setNewMessage] = useState('');
   const [messages, setMessages] = useState([{ user: { nick: '' }, message: '' }]);
 
-  useEffect(() => {
-    if (props.nickname) {
-      setInterval(() => {
-        apiClient.getMessages(props.roomName, props.nickname).then(async (r: Response) => {
-          const m = await r.json();
-          setMessages(m);
-        });
-      }, 1000);
-    }
-  }, [props.nickname]);
-
   const handleChangeNewMessage = (evt: any) => {
     setNewMessage(evt.target.value);
   };

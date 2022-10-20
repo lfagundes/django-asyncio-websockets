@@ -7,12 +7,22 @@ import './App.css';
 const App = () => {
   const [nickname, setNickname] = useState('');
   const [roomName, setRoomName] = useState('');
+  const [connected, setConnected] = useState(false);
 
   useEffect(() => {
     if (window.location.pathname.length > 1) {
       setRoomName(window.location.pathname.substring(1));
     }
   }, [window.location.pathname]);
+
+  useEffect(() => {
+    if (roomName && !connected && nickname) {
+      setConnected(true);
+      apiClient.watch(roomName, nickname, (payload) => {
+        console.log(payload);
+      });
+    }
+  }, [roomName, nickname]);
 
   return (
     <div className="App">

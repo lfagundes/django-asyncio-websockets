@@ -1,8 +1,5 @@
 const API_URL = '/api';
-
-const join = (roomName: string, nickName: string): Promise<Response> => {
-  return fetch(`${API_URL}/join/${roomName}/${nickName}`, { method: 'POST' })
-};
+const WS_URL = 'ws://localhost:8000/ws';
 
 const sendMessage = (roomName: string, nickName: string, message: string): Promise<Response> => {
   return fetch(`${API_URL}/send/${roomName}/${nickName}`, {
@@ -18,5 +15,27 @@ const getMessages = (roomName: string, nickName: string): Promise<Response> => {
   return fetch(`${API_URL}/messages/${roomName}/${nickName}`, { method: 'GET' })
 };
 
+export const watch = (
+  roomName: string,
+  nickName: string,
+  callback: (payload: any) => void,
+) => {
+  const ws = new WebSocket(`${WS_URL}/chat/${roomName}/${nickName}`);
 
-export default { join, sendMessage, getMessages };
+  ws.onopen = () => {
+    console.log('connected');
+  };
+
+  ws.onclose = (connection) => {
+    console.log('closed');
+  };
+
+  ws.onerror = (connection) => {
+    console.log('error', connection);
+  };
+
+  ws.onmessage = callback;
+
+};
+
+export default { sendMessage, getMessages, watch };
