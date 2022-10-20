@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import apiClient from './apiClient';
 
 interface Message {
@@ -13,18 +13,18 @@ interface ChatBoxProps {
 }
 
 const ChatBox = (props: ChatBoxProps) => {
-  const [newMessage, setNewMessage] = useState('')
+  const [newMessage, setNewMessage] = useState('');
 
   const handleChangeNewMessage = (evt: any) => {
-    setNewMessage(evt.target.value)
-  }
+    setNewMessage(evt.target.value);
+  };
 
   const handleSubmitNewMessage = (evt: any) => {
     apiClient.sendMessage(newMessage, props.roomName).then(() => {
-      setNewMessage('')
+      setNewMessage('');
     });
-    evt.preventDefault()
-  }
+    evt.preventDefault();
+  };
 
   return props.joined ? <div className='ChatBox'>
     <ul className='ListMessages'>
@@ -32,7 +32,7 @@ const ChatBox = (props: ChatBoxProps) => {
         return (<li>
           <span className='UserNick'>{v.user}: </span>
           <span className='MessageText'>{v.message}</span>
-        </li>)
+        </li>);
       })}
     </ul>
     <form onSubmit={handleSubmitNewMessage}>
@@ -40,7 +40,7 @@ const ChatBox = (props: ChatBoxProps) => {
       <input id='newMessage' type="text" value={newMessage} onChange={handleChangeNewMessage} />
       <input type="submit" value="Enviar" />
     </form>
-  </div > : <></>
-}
+  </div > : <></>;
+};
 
-export default ChatBox
+export default ChatBox;

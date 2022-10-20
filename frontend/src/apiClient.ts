@@ -1,15 +1,21 @@
-const API_URL = 'http://localhost:8000'
+const API_URL = 'http://localhost:8000/api';
+
+const join = (roomName: string, nickName: string): Promise<Response> => {
+  return fetch(`${API_URL}/join/${roomName}/${nickName}`, { method: 'POST' })
+};
+
+const leave = (roomName: string, nickName: string): Promise<Response> => {
+  return fetch(`${API_URL}/leave/${roomName}/${nickName}`, { method: 'POST' })
+};
+
+const sendMessage = (roomName: string, nickName: string, message: string): Promise<Response> => {
+  return fetch(`${API_URL}/send/${roomName}/${nickName}`, { method: 'POST',
+                                                            body: JSON.stringify({ message }) })
+};
 
 const getMessages = (roomName: string): Promise<Response> => {
-    return fetch(`${API_URL}/${roomName}/messages`, { method: 'POST' })
-}
+  return fetch(`${API_URL}/messages/${roomName}`, { method: 'GET' })
+};
 
-const join = (roomName: string): Promise<Response> => {
-    return fetch(`${API_URL}/${roomName}/join`, { method: 'POST' })
-}
 
-const sendMessage = (message: string, roomName: string): Promise<Response> => {
-    return fetch(`${API_URL}/${roomName}/send`, { method: 'POST', body: JSON.stringify({ message }) })
-}
-
-export default { getMessages, join, sendMessage }
+export default { getMessages, join, sendMessage };
