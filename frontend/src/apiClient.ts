@@ -11,6 +11,9 @@ const leave = (roomName: string, nickName: string): Promise<Response> => {
 const sendMessage = (roomName: string, nickName: string, message: string): Promise<Response> => {
   return fetch(`${API_URL}/send/${roomName}/${nickName}`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({ message })
   })
 };

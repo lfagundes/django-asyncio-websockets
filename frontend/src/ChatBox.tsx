@@ -13,7 +13,7 @@ interface ChatBoxProps {
 
 const ChatBox = (props: ChatBoxProps) => {
   const [newMessage, setNewMessage] = useState('');
-  const [messages, setMessages] = useState([{ user: '', message: '' }]);
+  const [messages, setMessages] = useState([{ user: { nick: '' }, message: '' }]);
 
   useEffect(() => {
     if (props.nickname) {
@@ -41,7 +41,7 @@ const ChatBox = (props: ChatBoxProps) => {
     <ul className='ListMessages'>
       {!!messages && messages.map((v) => {
         return (<li>
-          <span className='UserNick'>{v.user}: </span>
+          <span className='UserNick'>{v.user.nick}: </span>
           <span className='MessageText'>{v.message}</span>
         </li>);
       })}
