@@ -2,30 +2,25 @@ import { useState } from 'react';
 import apiClient from './apiClient';
 
 interface ChooseNickProps {
-  joined: boolean;
-  setJoined: Function;
+  nickname: string;
+  setNickname: Function;
   roomName: string;
 }
 
 const ChooseNick = (props: ChooseNickProps) => {
-  const [nickname, setNickname] = useState('');
-
-  const handleChangeNickname = (evt: any) => {
-    setNickname(evt.target.value);
-  };
-
   const handleSubmitNickname = (evt: any) => {
-    apiClient.join(props.roomName, nickname).then(() => {
-      props.setJoined(true);
+    const n = evt.target[0].value;
+    apiClient.join(props.roomName, n).then(() => {
+      props.setNickname(n);
     });
 
     evt.preventDefault();
   };
 
-  return !props.joined ? <div className='UserChoose'>
+  return (typeof props.nickname != 'undefined' && props.nickname.length <= 0) ? <div className='UserChoose'>
     <form onSubmit={handleSubmitNickname}>
       <label htmlFor='nickname'>Nickname:</label>
-      <input id='nickname' type="text" value={nickname} onChange={handleChangeNickname} />
+      <input id='nickname' type="text" />
       <input type="submit" value="Enviar" />
     </form>
   </div> : <></>;
