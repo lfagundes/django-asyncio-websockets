@@ -27,5 +27,5 @@ urlpatterns = [
     path('api/join/<str:room_name>/<str:nick>', JoinView.as_view()),
     path('api/leave/<str:room_name>/<str:nick>', LeaveView.as_view()),
     path('api/send/<str:room_name>/<str:nick>', SendView.as_view()),
-    path('api/messages/<str:room_name>', MessageListView.as_view()),
+    path('api/messages/<str:room_name>/<str:nick>', MessageListView.as_view()),
 ]

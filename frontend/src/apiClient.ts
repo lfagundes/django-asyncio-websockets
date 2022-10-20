@@ -18,8 +18,8 @@ const sendMessage = (roomName: string, nickName: string, message: string): Promi
   })
 };
 
-const getMessages = (roomName: string): Promise<Response> => {
-  return fetch(`${API_URL}/messages/${roomName}`, { method: 'GET' })
+const getMessages = (roomName: string, nickName: string): Promise<Response> => {
+  return fetch(`${API_URL}/messages/${roomName}/${nickName}`, { method: 'GET' })
 };
 
 

@@ -42,10 +42,13 @@ class SendView(APIView):
 
 class MessageListView(APIView):
 
-    def get(self, request, room_name):
+    def get(self, request, room_name, nick):
         room, _ = Room.objects.get_or_create(name=room_name)
+
+        room.user_tick(nick)
 
         messages = room.message_set.all()[:20]
 
         serializer = MessageSerializer(messages, many=True)
-        return Response(serializer.data)
+
+        return Response(reversed(serializer.data))

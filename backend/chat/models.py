@@ -9,6 +9,10 @@ class Room(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def online_users(self):
+        return self.user_set.filter(online=True)
+
     def user_join(self, nick):
         user, _ = self.user_set.get_or_create(nick=nick)
 
@@ -24,6 +28,10 @@ class Room(models.Model):
         except User.DoesNotExist:
             return False
 
+        user.online = False
+        user.last_seen = timezone.now()
+        user.save()
+
         message = f'{nick} saiu da sala'
 
         self.message_set.create(user=user,
@@ -32,14 +40,30 @@ class Room(models.Model):
         return True
 
     def send_message(self, nick, message):
-        user = self.user_set.get(nick=nick)
+        user, _ = self.user_set.get_or_create(nick=nick)
         self.message_set.create(user=user,
                                 message=message)
+
+    def user_tick(self, nick):
+        user, _ = self.user_set.get_or_create(nick=nick)
+        user.online = True
+        user.last_seen = timezone.now()
+        user.save()
 
 
 class User(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     nick = models.CharField(max_length=16)
+    last_seen = models.DateTimeField(auto_now_add=True)
+    online = models.BooleanField(default=True)
+
+    def disconnect_idle(self):
+        self.room.message_set.create(user=self,
+                                     message=f'{self.nick} caiu (timeout)',
+                                     action=True)
+        self.online = False
+        self.save()
+
 
     class Meta:
         unique_together = [['room', 'nick']]

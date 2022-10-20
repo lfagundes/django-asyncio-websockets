@@ -18,7 +18,7 @@ const ChatBox = (props: ChatBoxProps) => {
   useEffect(() => {
     if (props.nickname) {
       setInterval(() => {
-        apiClient.getMessages(props.roomName).then(async (r: Response) => {
+        apiClient.getMessages(props.roomName, props.nickname).then(async (r: Response) => {
           const m = await r.json();
           setMessages(m);
         });
@@ -47,7 +47,7 @@ const ChatBox = (props: ChatBoxProps) => {
       })}
     </ul>
     <form onSubmit={handleSubmitNewMessage}>
-      <label htmlFor='newMessage'>Texto: </label>
+      <label htmlFor='newMessage'>{props.nickname}: </label>
       <input id='newMessage' type="text" value={newMessage} onChange={handleChangeNewMessage} />
       <input type="submit" value="Enviar" />
     </form>
