@@ -30,6 +30,9 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+
+  background-color: #ffffff;
+  color: #000000;
 }
 
 h1 {
@@ -48,12 +51,19 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+input[type=text] {
+  background-color: transparent;
+  color: #000000;
 }
 
 @media (prefers-color-scheme: light) {

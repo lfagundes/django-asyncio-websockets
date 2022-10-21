@@ -11,9 +11,20 @@ interface ChatBoxProps {
   roomName: string
 }
 
+interface User {
+  nick: string;
+}
+
+interface Message {
+  user: User;
+  message: string;
+}
+
 const ChatBox = (props: ChatBoxProps) => {
   const [newMessage, setNewMessage] = useState('');
-  const [messages, setMessages] = useState([{ user: { nick: '' }, message: '' }]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [connected, setConnected] = useState(false);
+  const [webSocket, setWebSocket] = useState<WebSocket>();
 
   const handleChangeNewMessage = (evt: any) => {
     setNewMessage(evt.target.value);
@@ -26,11 +37,34 @@ const ChatBox = (props: ChatBoxProps) => {
     evt.preventDefault();
   };
 
+  useEffect(() => {
+    if (props.roomName && !connected && props.nickname) {
+      const ws = apiClient.watch(props.roomName, props.nickname, (payload) => {
+        debugger;
+        // SET FUNCTION TO LOAD PREVEOULY MESSAGE
+      });
+
+      setConnected(true);
+      setWebSocket(ws);
+    }
+  }, [props.roomName, props.nickname]);
+
+  useEffect(() => {
+    const handleNewMessage = (payload: { data: string }) => {
+      const message = JSON.parse(payload.data) as Message;
+      setMessages([...messages, message]);
+    };
+
+    if (connected && webSocket) {
+      webSocket.onmessage = handleNewMessage;
+    }
+  }, [messages, connected, webSocket]);
+
   return (typeof props.nickname != 'undefined' && props.nickname.length > 0) ? <div className='ChatBox'>
     <ul className='ListMessages'>
       {!!messages && messages.map((v) => {
         return (<li>
-          <span className='UserNick'>{v.user.nick}: </span>
+          <span className='UserNick'>{v.user}: </span>
           <span className='MessageText'>{v.message}</span>
         </li>);
       })}
