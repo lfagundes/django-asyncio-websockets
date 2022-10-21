@@ -1,4 +1,4 @@
-const API_URL = '/api';
+const API_URL = 'http://localhost:8000/api';
 const WS_URL = 'ws://localhost:8000/ws';
 
 const sendMessage = (roomName: string, nickName: string, message: string): Promise<Response> => {
@@ -35,7 +35,7 @@ export const watch = (
   };
 
   ws.onmessage = callback;
-
+  return ws;
 };
 
 export default { sendMessage, getMessages, watch };
